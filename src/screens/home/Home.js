@@ -10,7 +10,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import AvatarIcon from '../../assets/ic_profile.png';
 import {withStyles} from '@material-ui/core/styles';
-import FavoriteIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIconBorder from '@material-ui/icons/FavoriteBorder';
+import FavoriteIconFill from '@material-ui/icons/Favorite';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -101,8 +102,64 @@ class Home extends Component{
           "name": "Le Truc"
         }
       },
-
-    ]
+      {
+        "comments": {
+          "count": 0
+        },
+        "caption": {
+          "created_time": "1296710352",
+          "text": "Inside le truc #foodtruck",
+          "from": {
+            "username": "kevin",
+            "full_name": "Kevin Systrom",
+            "type": "user",
+            "id": "3"
+          },
+          "id": "26621409"
+        },
+        "likes": {
+          "count": 15
+        },
+        "link": "http://instagr.am/p/BWrVZ/",
+        "user": {
+          "username": "kevin",
+          "profile_picture": "http://distillery.s3.amazonaws.com/profiles/profile_3_75sq_1295574122.jpg",
+          "id": "3"
+        },
+        "created_time": "1296710327",
+        "images": {
+          "low_resolution": {
+            "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_6.jpg",
+            "width": 306,
+            "height": 306
+          },
+          "thumbnail": {
+            "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_5.jpg",
+            "width": 150,
+            "height": 150
+          },
+          "standard_resolution": {
+            "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_7.jpg",
+            "width": 612,
+            "height": 612
+          }
+        },
+        "type": "image",
+        "users_in_photo": [],
+        "filter": "Earlybird",
+        "tags": ["foodtruck"],
+        "id": "22721882",
+        "location": {
+          "latitude": 37.778720183610183,
+          "longitude": -122.3962783813477,
+          "id": "520640",
+          "street_address": "",
+          "name": "Le Truc"
+        }
+      }
+    ],
+    likeSet:new Set(),
+    comments:{}
   }
 }
 
@@ -147,7 +204,8 @@ class Home extends Component{
                 classes={classes}
                 item={item}
                 onLikedClicked={this.likeClickHandler}
-                onAddCommentClicked={this.addCommentClickHandler}/>
+                onAddCommentClicked={this.addCommentClickHandler}
+                likeSet={this.state.likeSet}/>
             </GridListTile>
           ))}
         </GridList>
@@ -157,16 +215,30 @@ class Home extends Component{
 
   likeClickHandler = (id) =>{
     console.log('like id',id);
-    var index = this.state.data.findIndex((item) => {
+    var foundItem = this.state.data.find((item) => {
       return item.id === id;
     })
-    var foundItem = this.state[index];
 
     console.log('found item',foundItem);
     if (foundItem !== undefined) {
-      let likes = foundItem.likes.count+1;
-    }
+      if (!this.state.likeSet.has(id)) {
+        foundItem.likes.count++;
+        this.setState(({likeSet}) => ({
+          likeSet:new Set(likeSet.add(id))
+        }))
+      }else {
+        foundItem.likes.count--;
+        this.setState(({likeSet}) =>{
+          const newLike = new Set(likeSet);
+          newLike.delete(id);
 
+          return {
+            likeSet:newLike
+          };
+        });
+      }
+    }
+    console.log('state',this.state.data);
   }
 
   addCommentClickHandler = (id)=>{
@@ -175,7 +247,7 @@ class Home extends Component{
 }
 
 function HomeItem(props) {
-  const {classes, item} = props;
+  const {classes, item, likeSet} = props;
   let createdTime = new Date(0);
   createdTime.setUTCSeconds(item.created_time);
   let yyyy = createdTime.getFullYear();
@@ -215,7 +287,8 @@ function HomeItem(props) {
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
           <IconButton aria-label="Add to favorites" onClick={props.onLikedClicked.bind(this,item.id)}>
-            <FavoriteIcon />
+            {likeSet.has(item.id) && <FavoriteIconFill style={{color:'#F44336'}}/>}
+            {!likeSet.has(item.id) && <FavoriteIconBorder/>}
           </IconButton>
           <Typography component="p">
             {item.likes.count} Likes
