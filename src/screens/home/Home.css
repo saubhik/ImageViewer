@@ -20,3 +20,7 @@
   margin:10px;
   background-color:"#FF5722"
 }
+.row{
+  display: flex;
+  flex-direction: row;
+}

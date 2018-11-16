@@ -44,123 +44,127 @@ const styles =  theme => ({
 class Home extends Component{
 
   constructor() {
-  super();
-  this.state = {
-    "data": [
-      {
-        "comments": {
-          "count": 0
-        },
-        "caption": {
-          "created_time": "1296710352",
-          "text": "Inside le truc #foodtruck",
-          "from": {
+    super();
+    sessionStorage.setItem('username','admin');
+    this.state = {
+      "data": [
+        {
+          "comments": {
+            "count": 0
+          },
+          "caption": {
+            "created_time": "1296710352",
+            "text": "Inside le truc #foodtruck",
+            "from": {
+              "username": "kevin",
+              "full_name": "Kevin Systrom",
+              "type": "user",
+              "id": "3"
+            },
+            "id": "26621408"
+          },
+          "likes": {
+            "count": 15
+          },
+          "link": "http://instagr.am/p/BWrVZ/",
+          "user": {
             "username": "kevin",
-            "full_name": "Kevin Systrom",
-            "type": "user",
+            "profile_picture": "http://distillery.s3.amazonaws.com/profiles/profile_3_75sq_1295574122.jpg",
             "id": "3"
           },
-          "id": "26621408"
-        },
-        "likes": {
-          "count": 15
-        },
-        "link": "http://instagr.am/p/BWrVZ/",
-        "user": {
-          "username": "kevin",
-          "profile_picture": "http://distillery.s3.amazonaws.com/profiles/profile_3_75sq_1295574122.jpg",
-          "id": "3"
-        },
-        "created_time": "1296710327",
-        "images": {
-          "low_resolution": {
-            "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_6.jpg",
-            "width": 306,
-            "height": 306
+          "created_time": "1296710327",
+          "images": {
+            "low_resolution": {
+              "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_6.jpg",
+              "width": 306,
+              "height": 306
+            },
+            "thumbnail": {
+              "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_5.jpg",
+              "width": 150,
+              "height": 150
+            },
+            "standard_resolution": {
+              "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_7.jpg",
+              "width": 612,
+              "height": 612
+            }
           },
-          "thumbnail": {
-            "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_5.jpg",
-            "width": 150,
-            "height": 150
-          },
-          "standard_resolution": {
-            "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_7.jpg",
-            "width": 612,
-            "height": 612
+          "type": "image",
+          "users_in_photo": [],
+          "filter": "Earlybird",
+          "tags": ["foodtruck"],
+          "id": "22721881",
+          "location": {
+            "latitude": 37.778720183610183,
+            "longitude": -122.3962783813477,
+            "id": "520640",
+            "street_address": "",
+            "name": "Le Truc"
           }
         },
-        "type": "image",
-        "users_in_photo": [],
-        "filter": "Earlybird",
-        "tags": ["foodtruck"],
-        "id": "22721881",
-        "location": {
-          "latitude": 37.778720183610183,
-          "longitude": -122.3962783813477,
-          "id": "520640",
-          "street_address": "",
-          "name": "Le Truc"
+        {
+          "comments": {
+            "count": 0
+          },
+          "caption": {
+            "created_time": "1296710352",
+            "text": "Inside le truc #foodtruck",
+            "from": {
+              "username": "kevin",
+              "full_name": "Kevin Systrom",
+              "type": "user",
+              "id": "3"
+            },
+            "id": "26621409"
+          },
+          "likes": {
+            "count": 15
+          },
+          "link": "http://instagr.am/p/BWrVZ/",
+          "user": {
+            "username": "kevin",
+            "profile_picture": "http://distillery.s3.amazonaws.com/profiles/profile_3_75sq_1295574122.jpg",
+            "id": "3"
+          },
+          "created_time": "1296710327",
+          "images": {
+            "low_resolution": {
+              "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_6.jpg",
+              "width": 306,
+              "height": 306
+            },
+            "thumbnail": {
+              "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_5.jpg",
+              "width": 150,
+              "height": 150
+            },
+            "standard_resolution": {
+              "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_7.jpg",
+              "width": 612,
+              "height": 612
+            }
+          },
+          "type": "image",
+          "users_in_photo": [],
+          "filter": "Earlybird",
+          "tags": ["foodtruck"],
+          "id": "22721882",
+          "location": {
+            "latitude": 37.778720183610183,
+            "longitude": -122.3962783813477,
+            "id": "520640",
+            "street_address": "",
+            "name": "Le Truc"
+          }
         }
+      ],
+      likeSet:new Set(),
+      comments:{
+        22721881:['lafhlsaf','asfkgisag']
       },
-      {
-        "comments": {
-          "count": 0
-        },
-        "caption": {
-          "created_time": "1296710352",
-          "text": "Inside le truc #foodtruck",
-          "from": {
-            "username": "kevin",
-            "full_name": "Kevin Systrom",
-            "type": "user",
-            "id": "3"
-          },
-          "id": "26621409"
-        },
-        "likes": {
-          "count": 15
-        },
-        "link": "http://instagr.am/p/BWrVZ/",
-        "user": {
-          "username": "kevin",
-          "profile_picture": "http://distillery.s3.amazonaws.com/profiles/profile_3_75sq_1295574122.jpg",
-          "id": "3"
-        },
-        "created_time": "1296710327",
-        "images": {
-          "low_resolution": {
-            "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_6.jpg",
-            "width": 306,
-            "height": 306
-          },
-          "thumbnail": {
-            "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_5.jpg",
-            "width": 150,
-            "height": 150
-          },
-          "standard_resolution": {
-            "url": "http://distillery.s3.amazonaws.com/media/2011/02/02/6ea7baea55774c5e81e7e3e1f6e791a7_7.jpg",
-            "width": 612,
-            "height": 612
-          }
-        },
-        "type": "image",
-        "users_in_photo": [],
-        "filter": "Earlybird",
-        "tags": ["foodtruck"],
-        "id": "22721882",
-        "location": {
-          "latitude": 37.778720183610183,
-          "longitude": -122.3962783813477,
-          "id": "520640",
-          "street_address": "",
-          "name": "Le Truc"
-        }
-      }
-    ],
-    likeSet:new Set(),
-    comments:{}
-  }
+      currrentComment:""
+    }
 }
 
   componentDidMount(){
@@ -205,7 +209,10 @@ class Home extends Component{
                 item={item}
                 onLikedClicked={this.likeClickHandler}
                 onAddCommentClicked={this.addCommentClickHandler}
-                likeSet={this.state.likeSet}/>
+                commentChangeHandler={this.commentChangeHandler}
+                likeSet={this.state.likeSet}
+                comments={this.state.comments}
+                commentValue={this.state.currentComment}/>
             </GridListTile>
           ))}
         </GridList>
@@ -242,12 +249,31 @@ class Home extends Component{
   }
 
   addCommentClickHandler = (id)=>{
-    console.log('coment id',id);
+    console.log('coment id',id,this.state.currentComment, this.state.comments);
+
+    let commentList = this.state.comments.hasOwnProperty(id)?
+      this.state.comments[id].concat(this.state.currentComment): [].concat(this.state.currentComment);
+
+    console.log('comment list', commentList);
+    this.setState({
+      comments:{
+        ...this.state.comments,
+        [id]:commentList
+      },
+      currentComment:''
+    })
+  }
+
+
+  commentChangeHandler = (e) => {
+    this.setState({
+      currentComment:e.target.value
+    });
   }
 }
 
 function HomeItem(props) {
-  const {classes, item, likeSet} = props;
+  const {classes, item, likeSet, comments} = props;
   let createdTime = new Date(0);
   createdTime.setUTCSeconds(item.created_time);
   let yyyy = createdTime.getFullYear();
@@ -294,13 +320,28 @@ function HomeItem(props) {
             {item.likes.count} Likes
           </Typography>
         </CardActions>
+        <CardContent>
+          {comments.hasOwnProperty(item.id) && comments[item.id].map((comment)=>{
+            return(
+              <div className="row">
+                <Typography component="p" style={{fontWeight:'bold'}}>
+                  {sessionStorage.getItem('username')}:
+                </Typography>
+                <Typography component="p" >
+                  {comment}
+                </Typography>
+              </div>
+            )
+          })}
+        </CardContent>
         <CardActions className={classes.comment}>
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="comment">Add Comment</InputLabel>
-            <Input id="comment"/>
+            <Input id="comment" value={props.commentValue} onChange={props.commentChangeHandler}/>
           </FormControl>
           <FormControl>
-            <Button onClick={props.onLikedClicked.bind(this,item.id)} variant="contained" color="primary">
+            <Button onClick={props.onAddCommentClicked.bind(this,item.id)}
+               variant="contained" color="primary">
               ADD
             </Button>
           </FormControl>
