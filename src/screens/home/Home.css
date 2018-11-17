@@ -1,5 +1,5 @@
 .home-item-main-container{
-  margin-top: 100px;
+  margin-top: 10px;
   margin-left: 10px;
   margin-bottom: 10px;
   margin-right: 10px;
@@ -19,4 +19,8 @@
 .horizpontal-rule{
   margin:10px;
   background-color:"#FF5722"
+}
+.row{
+  display: flex;
+  flex-direction: row;
 }
