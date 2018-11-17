@@ -5,22 +5,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import InputBase from '@material-ui/core/InputBase';
 import {withStyles} from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import {fade} from '@material-ui/core/styles/colorManipulator';
 import Avatar from '@material-ui/core/Avatar';
-import AvatarIcon from '../../assets/ic_profile.png';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import green from '@material-ui/core/colors/green';
-
-const theme = createMuiTheme({
-  palette: {
-    primary:{
-      main:'#263238'
-    },
-    secondary: {
-      main: '#ffffff',
-    }
-  }
-});
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const styles = theme => ({
   grow: {
@@ -28,17 +16,10 @@ const styles = theme => ({
   },
   search: {
     position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25)
-    },
+    borderRadius: '4px',
+    backgroundColor: '#c0c0c0',
     marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing.unit,
-      width: 'auto'
-    }
+    width: '300px',
   },
   searchIcon: {
     width: theme.spacing.unit * 9,
@@ -47,7 +28,8 @@ const styles = theme => ({
     pointerEvents: 'none',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    color:'#000000'
   },
   inputInput: {
     paddingTop: theme.spacing.unit,
@@ -66,35 +48,74 @@ const styles = theme => ({
   avatar: {
     width: 50,
     height: 50,
-    margin: 10
   }
 })
-function Header(props) {
-  const {classes, isSearchBarVisible, isProfileIconVisible} = props;
-  return (<div>
-    <MuiThemeProvider theme={theme}>
-      <AppBar color="primary" className="app-header">
-        <Toolbar>
-          <span className="header-logo">Image Viewer</span>
-          <div className={classes.grow}/>
-          {isSearchBarVisible &&
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon/>
+
+class Header extends Component{
+
+  constructor(props){
+    super(props);
+    this.state = {
+      anchorEl: null,
+    };
+  }
+
+  render(){
+    const {classes, isSearchBarVisible, isProfileIconVisible} = this.props;
+    return (<div>
+        <AppBar style={{backgroundColor:'#263238'}} className="app-header">
+          <Toolbar>
+            <span className="header-logo">Image Viewer</span>
+            <div className={classes.grow}/>
+            {isSearchBarVisible &&
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon/>
+                </div>
+                <InputBase onChange={(e)=>{this.props.searchHandler(e.target.value)}} placeholder="Search…" classes={{
+                    input: classes.inputInput
+                  }}/>
               </div>
-              <InputBase placeholder="Search…" classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput
-                }}/>
-            </div>
-          }
-          {isProfileIconVisible &&
-            <Avatar alt="Remy Sharp" src={AvatarIcon} className={classes.avatar}/>
-          }
-        </Toolbar>
-      </AppBar>
-    </MuiThemeProvider>
-  </div>)
+            }
+            {isProfileIconVisible &&
+              <div>
+                <IconButton onClick={this.handleClick}>
+                  <Avatar alt="Profile Pic" src={this.props.userProfileUrl} className={classes.avatar}/>
+                </IconButton>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={this.state.anchorEl}
+                  open={Boolean(this.state.anchorEl)}
+                  onClose={this.handleClose}>
+                    <MenuItem onClick={this.handleAccount}>My account</MenuItem>
+                    <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
+                </Menu>
+              </div>
+            }
+          </Toolbar>
+        </AppBar>
+    </div>)
+  }
+
+  handleClick = (event) =>{
+    this.setState({
+      anchorEl: event.currentTarget
+    })
+  }
+
+  handleAccount = ()=>{
+    this.props.handleAccount();
+    this.handleClose();
+  }
+
+  handleLogout = ()=>{
+    this.props.handleLogout();
+    this.handleClose();
+  }
+
+  handleClose = () =>{
+    this.setState({ anchorEl: null });
+  }
 }
 
 export default withStyles(styles)(Header)
