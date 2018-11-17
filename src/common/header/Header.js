@@ -22,7 +22,7 @@ const styles = theme => ({
     width: '300px',
   },
   searchIcon: {
-    width: theme.spacing.unit * 9,
+    width: theme.spacing.unit * 4,
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',
@@ -35,7 +35,7 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit,
     paddingRight: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
-    paddingLeft: theme.spacing.unit * 10,
+    paddingLeft: theme.spacing.unit * 4,
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
@@ -70,7 +70,7 @@ class Header extends Component{
             {isSearchBarVisible &&
               <div className={classes.search}>
                 <div className={classes.searchIcon}>
-                  <SearchIcon/>
+                  <SearchIcon />
                 </div>
                 <InputBase onChange={(e)=>{this.props.searchHandler(e.target.value)}} placeholder="Search…" classes={{
                     input: classes.inputInput
@@ -80,14 +80,14 @@ class Header extends Component{
             {isProfileIconVisible &&
               <div>
                 <IconButton onClick={this.handleClick}>
-                  <Avatar alt="Profile Pic" src={this.props.userProfileUrl} className={classes.avatar}/>
+                  <Avatar alt="Profile Pic" src={this.props.userProfileUrl} className={classes.avatar} style={{border: "1px solid #fff"}}/>
                 </IconButton>
                 <Menu
                   id="simple-menu"
                   anchorEl={this.state.anchorEl}
                   open={Boolean(this.state.anchorEl)}
                   onClose={this.handleClose}>
-                    <MenuItem onClick={this.handleAccount}>My account</MenuItem>
+                    <MenuItem onClick={this.handleAccount}>My account</MenuItem><hr />
                     <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>
