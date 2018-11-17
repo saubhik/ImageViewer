@@ -57,7 +57,8 @@ class Home extends Component{
       currrentComment:"",
       currentCommentList:[]
     }
-}
+  }
+  
   componentDidMount(){
     this.getUserInfo();
     this.getMediaData();
@@ -199,7 +200,7 @@ class Home extends Component{
   }
 
   navigateToAccount = () =>{
-    // this.props.history.push('/account');
+    this.props.history.push('/profile');
   }
 }
 
