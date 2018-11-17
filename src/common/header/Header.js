@@ -6,19 +6,9 @@ import InputBase from '@material-ui/core/InputBase';
 import {withStyles} from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Avatar from '@material-ui/core/Avatar';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
-
-const theme = createMuiTheme({
-  palette: {
-    primary:{
-      main:'#263238'
-    },
-    secondary: {
-      main: '#ffffff',
-    }
-  }
-});
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const styles = theme => ({
   grow: {
@@ -61,34 +51,71 @@ const styles = theme => ({
   }
 })
 
-function Header(props) {
-  const {classes, isSearchBarVisible, isProfileIconVisible} = props;
-  return (<div>
-    <MuiThemeProvider theme={theme}>
-      <AppBar color="primary" className="app-header">
-        <Toolbar>
-          <span className="header-logo">Image Viewer</span>
-          <div className={classes.grow}/>
-          {isSearchBarVisible &&
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon/>
+class Header extends Component{
+
+  constructor(props){
+    super(props);
+    this.state = {
+      anchorEl: null,
+    };
+  }
+
+  render(){
+    const {classes, isSearchBarVisible, isProfileIconVisible} = this.props;
+    return (<div>
+        <AppBar style={{backgroundColor:'#263238'}} className="app-header">
+          <Toolbar>
+            <span className="header-logo">Image Viewer</span>
+            <div className={classes.grow}/>
+            {isSearchBarVisible &&
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon/>
+                </div>
+                <InputBase onChange={(e)=>{this.props.searchHandler(e.target.value)}} placeholder="Search…" classes={{
+                    input: classes.inputInput
+                  }}/>
               </div>
-              <InputBase onChange={(e)=>{props.searchHandler(e.target.value)}} placeholder="Search…" classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput
-                }}/>
-            </div>
-          }
-          {isProfileIconVisible &&
-            <IconButton>
-              <Avatar alt="Profile Pic" src={props.userProfileUrl} className={classes.avatar}/>
-            </IconButton>
-          }
-        </Toolbar>
-      </AppBar>
-    </MuiThemeProvider>
-  </div>)
+            }
+            {isProfileIconVisible &&
+              <div>
+                <IconButton onClick={this.handleClick}>
+                  <Avatar alt="Profile Pic" src={this.props.userProfileUrl} className={classes.avatar}/>
+                </IconButton>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={this.state.anchorEl}
+                  open={Boolean(this.state.anchorEl)}
+                  onClose={this.handleClose}>
+                    <MenuItem onClick={this.handleAccount}>My account</MenuItem>
+                    <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
+                </Menu>
+              </div>
+            }
+          </Toolbar>
+        </AppBar>
+    </div>)
+  }
+
+  handleClick = (event) =>{
+    this.setState({
+      anchorEl: event.currentTarget
+    })
+  }
+
+  handleAccount = ()=>{
+    this.props.handleAccount();
+    this.handleClose();
+  }
+
+  handleLogout = ()=>{
+    this.props.handleLogout();
+    this.handleClose();
+  }
+
+  handleClose = () =>{
+    this.setState({ anchorEl: null });
+  }
 }
 
 export default withStyles(styles)(Header)

@@ -43,20 +43,21 @@ const styles =  theme => ({
 
 class Home extends Component{
 
-  constructor() {
-    super();
-    sessionStorage.setItem('username','admin');
-    sessionStorage.setItem('access-token', '8661035776.d0fcd39.87fd934e04f84253aaf234d8bd4e4c65');
+  constructor(props) {
+    super(props);
+    if (sessionStorage.getItem('access-token') == null) {
+      props.history.replace('/');
+    }
     this.state = {
       "data": [],
       filteredData:[],
       userData:{},
       likeSet:new Set(),
       comments:{},
-      currrentComment:""
+      currrentComment:"",
+      currentCommentList:[]
     }
 }
-
   componentDidMount(){
     this.getUserInfo();
     this.getMediaData();
@@ -70,7 +71,9 @@ class Home extends Component{
           userProfileUrl={this.state.userData.profile_picture}
           isSearchBarVisible={true}
           isProfileIconVisible={true}
-          searchHandler={this.onSearchEntered}/>
+          searchHandler={this.onSearchEntered}
+          handleLogout={this.logout}
+          handleAccount={this.navigateToAccount}/>
         <GridList cellHeight={'auto'} spacing={5}>
           {this.state.filteredData.map(item => (
             <GridListTile key={item.id}>
@@ -189,7 +192,123 @@ class Home extends Component{
       console.log('error user data',error);
     });
   }
+
+  logout = () => {
+    sessionStorage.clear();
+    this.props.history.replace('/');
+  }
+
+  navigateToAccount = () =>{
+    // this.props.history.push('/account');
+  }
 }
+
+// class HomeItem extends Component{
+//   constructor(){
+//     super();
+//     this.state = {
+//       isLiked : false,
+//       comment:'',
+//     }
+//   }
+//   render(){
+//     const {classes, item, likeSet, comments} = this.props;
+//     let createdTime = new Date(0);
+//     createdTime.setUTCSeconds(item.created_time);
+//     let yyyy = createdTime.getFullYear();
+//     let mm = createdTime.getMonth() + 1;
+//     let dd = createdTime.getDate();
+//
+//     let HH = createdTime.getHours();
+//     let MM = createdTime.getMinutes();
+//     let ss = createdTime.getSeconds();
+//
+//     let time = dd+"/"+mm+"/"+yyyy+" "+HH+":"+MM+":"+ss;
+//     let hashTags = item.tags.map(hash =>{
+//       return "#"+hash;
+//     });
+//     return(
+//       <div className="home-item-main-container">
+//         <Card className={classes.card}>
+//           <CardHeader
+//             avatar={
+//               <Avatar alt="User Profile Pic" src={item.user.profile_picture} className={classes.avatar}/>
+//             }
+//             title={item.user.username}
+//             subheader={time}
+//           />
+//           <CardMedia
+//             className={classes.media}
+//             image={item.images.standard_resolution.url}
+//             title={item.caption.text}
+//           />
+//           <CardContent>
+//             <Typography component="p">
+//               {item.caption.text}
+//             </Typography>
+//             <Typography style={{color:'#4dabf5'}} component="p" >
+//               {hashTags.join(' ')}
+//             </Typography>
+//           </CardContent>
+//           <CardActions className={classes.actions} disableActionSpacing>
+//             <IconButton aria-label="Add to favorites" onClick={this.props.onLikedClicked.bind(this,item.id)}>
+//               {this.state.isLiked && <FavoriteIconFill style={{color:'#F44336'}}/>}
+//               {!this.state.isLiked && <FavoriteIconBorder/>}
+//             </IconButton>
+//             <Typography component="p">
+//               {item.likes.count} Likes
+//             </Typography>
+//           </CardActions>
+//           <CardContent>
+//             {comments.hasOwnProperty(item.id) && comments[item.id].map((comment)=>{
+//               return(
+//                 <div className="row">
+//                   <Typography component="p" style={{fontWeight:'bold'}}>
+//                     {sessionStorage.getItem('username')}:
+//                   </Typography>
+//                   <Typography component="p" >
+//                     {comment}
+//                   </Typography>
+//                 </div>
+//               )
+//             })}
+//           </CardContent>
+//           <CardActions className={classes.comment}>
+//             <FormControl className={classes.formControl}>
+//               <InputLabel htmlFor="comment">Add Comment</InputLabel>
+//               <Input id="comment" value={this.state.comment} onChange={this.props.commentChangeHandler}/>
+//             </FormControl>
+//             <FormControl>
+//               <Button onClick={this.onAddCommentClicked.bind(this,item.id)}
+//                  variant="contained" color="primary">
+//                 ADD
+//               </Button>
+//             </FormControl>
+//           </CardActions>
+//         </Card>
+//       </div>
+//     )
+//   }
+//
+//   onLikeClicked = (id)=>{
+//     if (this.state.isClicked) {
+//       this.setState({
+//         isLiked:false
+//       });
+//     }else {
+//       this.setState({
+//         isLiked:true
+//       });
+//     }
+//     this.props.likeClickHandler(id);
+//   }
+//
+//   onAddCommentClicked = (id)=>{
+//     this.setState({
+//       comment:
+//     })
+//   }
+// }
 
 function HomeItem(props) {
   const {classes, item, likeSet, comments} = props;
