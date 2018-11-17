@@ -15,7 +15,7 @@ const styles = {
     card: {
         padding: '15px',
         position: 'relative',
-        top: '20px',
+        top: '90px',
         left: '50%',
         width: '325px',
         transform: 'translateX(-50%)',
@@ -47,11 +47,17 @@ class Login extends Component {
         if (this.state.username === "" || this.state.password === "") { return }
 
         if (this.state.username === "admin" && this.state.password === "admin") {
+            sessionStorage.setItem('username','admin');
             sessionStorage.setItem('access-token', '8661035776.d0fcd39.87fd934e04f84253aaf234d8bd4e4c65');
             this.setState({ loggedIn: true });
+            this.navigateToHome();
         } else {
             this.setState({ incorrectUsernamePassword: "dispBlock" });
         }
+    }
+
+    navigateToHome = () =>{
+      this.props.history.push('/home');
     }
 
     inputUsernameChangeHandler = (e) => {
@@ -64,8 +70,8 @@ class Login extends Component {
 
     render() {
         return (
-            <div>
-                <Header />
+            <div className="main-container">
+                <Header/>
                 <Card style={styles.card}>
                     <CardContent>
                         <Typography style={styles.title}> LOGIN </Typography><br />
