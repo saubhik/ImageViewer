@@ -11,6 +11,9 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import CardMedia from '@material-ui/core/CardMedia';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
 
 const styles = {
     paper: {
@@ -21,6 +24,10 @@ const styles = {
         left: "40%",
         boxShadow: "2px 2px #888888",
         padding: "20px"
+    },
+    media: {
+        height: '200px',
+        paddingTop: '56.25%', // 16:9
     }
 };
 
@@ -40,19 +47,21 @@ class Profile extends Component {
             followed_by: null,
             editOpen: false,
             fullNameRequired: 'dispNone',
-            newFullName: ''
+            newFullName: '',
+            mediaData: null
         }
     }
 
     componentDidMount() {
         this.getUserInfo();
+        this.getMediaData();
     }
 
     getUserInfo = () => {
         let that = this;
         let url = `${constants.userInfoUrl}/?access_token=${sessionStorage.getItem('access-token')}`;
         return fetch(url, {
-            method:'GET',
+            method: 'GET',
         }).then((response) => {
             return response.json();
         }).then((jsonResponse) => {
@@ -64,9 +73,25 @@ class Profile extends Component {
                 follows: jsonResponse.data.counts.follows,
                 followed_by: jsonResponse.data.counts.followed_by
             });
-            console.log(jsonResponse.data)
         }).catch((error) => {
             console.log('error user data',error);
+        });
+    }
+
+    getMediaData = () => {
+        let that = this;
+        let url = `${constants.userMediaUrl}/?access_token=${sessionStorage.getItem('access-token')}`;
+        return fetch(url,{
+            method: 'GET',
+        }).then((response) => {
+            return response.json();
+        }).then((jsonResponse) => {
+            that.setState({
+                mediaData: jsonResponse.data
+            });
+            console.log(this.state.mediaData)
+        }).catch((error) => {
+            console.log('error media data',error);
         });
     }
 
@@ -144,6 +169,18 @@ class Profile extends Component {
                         </Modal>
                     </span>
                 </div>
+                {this.state.mediaData != null &&
+                <GridList cellHeight={'auto'} cols={3} style={{padding: "40px"}}>
+                {this.state.mediaData.map(item => (
+                    <GridListTile key={item.id}>
+                    <CardMedia
+                        style={styles.media}
+                        image={item.images.standard_resolution.url}
+                        title={item.caption.text}
+                    />
+                    </GridListTile>
+                ))}
+                </GridList>}
             </div>
         )
     }
