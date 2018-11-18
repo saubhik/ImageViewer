@@ -21,13 +21,22 @@ const styles = {
         width: "180px",
         backgroundColor: "#fff",
         top: "30%",
-        left: "40%",
+        margin: "0 auto",
         boxShadow: "2px 2px #888888",
         padding: "20px"
     },
     media: {
         height: '200px',
         paddingTop: '56.25%', // 16:9
+    },
+    imageModal: {
+        position: 'relative',
+        backgroundColor: "#fff",
+        top: "30%",
+        width: "50%",
+        margin: "0 auto",
+        boxShadow: "2px 2px #888888",
+        padding: "20px"
     }
 };
 
@@ -48,7 +57,9 @@ class Profile extends Component {
             editOpen: false,
             fullNameRequired: 'dispNone',
             newFullName: '',
-            mediaData: null
+            mediaData: null,
+            imageModalOpen: false,
+            currentItem: null
         }
     }
 
@@ -89,7 +100,6 @@ class Profile extends Component {
             that.setState({
                 mediaData: jsonResponse.data
             });
-            console.log(this.state.mediaData)
         }).catch((error) => {
             console.log('error media data',error);
         });
@@ -103,9 +113,21 @@ class Profile extends Component {
         this.setState({ editOpen: false });
     }
 
+    handleOpenImageModal = (event) => {
+        var result = this.state.mediaData.find(item => {
+            return item.id === event.target.id
+        })
+        console.log(result);
+        this.setState({ imageModalOpen: true, currentItem: result });
+    }
+
+    handleCloseImageModal = () => {
+        this.setState({ imageModalOpen: false });
+    }
+
     inputFullNameChangeHandler = (e) => {
         this.setState({ 
-            newFullName: e.target.value 
+            newFullName: e.target.value
         })
     }
 
@@ -169,18 +191,45 @@ class Profile extends Component {
                         </Modal>
                     </span>
                 </div>
+                
                 {this.state.mediaData != null &&
                 <GridList cellHeight={'auto'} cols={3} style={{padding: "40px"}}>
                 {this.state.mediaData.map(item => (
                     <GridListTile key={item.id}>
                     <CardMedia
+                        id={item.id}
                         style={styles.media}
                         image={item.images.standard_resolution.url}
                         title={item.caption.text}
+                        onClick={this.handleOpenImageModal}
                     />
                     </GridListTile>
                 ))}
                 </GridList>}
+                
+                {this.state.currentItem != null &&
+                <Modal
+                    aria-labelledby="image-modal"
+                    aria-describedby="modal to show image details"
+                    open={this.state.imageModalOpen}
+                    onClose={this.handleCloseImageModal}
+                    style={{alignItems: 'center', justifyContent: 'center'}}
+                >
+                    <div style={styles.imageModal}>
+                        <div>
+                            <img src={this.state.currentItem.images.standard_resolution.url} alt={this.state.currentItem.caption.text} />
+                        </div>
+                        <div>
+                            <Avatar
+                            alt="User Image"
+                            src={this.state.profile_picture}
+                            style={{width: "50px", height: "50px"}}
+                            />
+                            {this.state.username} <hr />
+                            {this.state.currentItem.caption.text}
+                        </div>
+                    </div>
+                </Modal>}
             </div>
         )
     }
