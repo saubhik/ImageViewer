@@ -9,6 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Popover from '@material-ui/core/Popover';
 
 const styles = theme => ({
   grow: {
@@ -48,6 +49,15 @@ const styles = theme => ({
   avatar: {
     width: 50,
     height: 50,
+  },
+  appHeader:{
+    backgroundColor:'#263238'
+  },
+  hr:{
+    height:'1.5px',
+    backgroundColor:'#f2f2f2',
+    marginLeft:'5px',
+    marginRight:'5px'
   }
 })
 
@@ -63,7 +73,7 @@ class Header extends Component{
   render(){
     const {classes, isSearchBarVisible, isProfileIconVisible} = this.props;
     return (<div>
-        <AppBar style={{backgroundColor:'#263238'}} className="app-header">
+        <AppBar className={classes.appHeader}>
           <Toolbar>
             <span className="header-logo">Image Viewer</span>
             <div className={classes.grow}/>
@@ -82,14 +92,25 @@ class Header extends Component{
                 <IconButton onClick={this.handleClick}>
                   <Avatar alt="Profile Pic" src={this.props.userProfileUrl} className={classes.avatar} style={{border: "1px solid #fff"}}/>
                 </IconButton>
-                <Menu
+                <Popover
                   id="simple-menu"
                   anchorEl={this.state.anchorEl}
                   open={Boolean(this.state.anchorEl)}
-                  onClose={this.handleClose}>
-                    <MenuItem onClick={this.handleAccount}>My account</MenuItem><hr />
-                    <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
-                </Menu>
+                  onClose={this.handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                  }}>
+                    <div style={{padding:'5px'}}>
+                      <MenuItem onClick={this.handleAccount}>My Account</MenuItem>
+                      <div className={classes.hr}/>
+                      <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
+                    </div>
+                </Popover>
               </div>
             }
           </Toolbar>

@@ -6,7 +6,7 @@ import Login from './screens/login/Login';
 const App = () => (
   <Switch>
     <Route exact path='/' render={({history}, props) => <Login {...props} history={history}/>} />
-    <Route exact path='/home' component={Home}/>
+    <Route exact path='/home' render={({history}, props) => <Home {...props} history={history}/>} />
   </Switch>
 )
 
